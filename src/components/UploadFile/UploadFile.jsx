@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react'
 import UploadIcon from '../SVG/UploadIcon'
 import DropBoxIcon from '../SVG/DropBoxIcon'
 import DownloadIcon from '../SVG/DownloadIcon'
+import { PulseLoader } from 'react-spinners'
 
 export default function UploadFile() {
+  const [loading, setLoading] = useState(false)
   const [files, setFiles] = useState([])
   const [imgTransforms, setImgTransforms] = useState('')
   const [imgDownload, setImgDownload] = useState('')
@@ -29,20 +31,26 @@ export default function UploadFile() {
     })
   const thumbs = files.map((file) => (
     <div key={file.name}>
-      <div>
-        <img
-          src={file.preview}
-          // Revoke data uri after image is loaded
-          onLoad={() => {
-            URL.revokeObjectURL(file.preview)
-          }}
-          alt={file.name}
-          className='rounded-md flex flex-col justify-center items-center w-full max-w-lg'
-        />
-      </div>
+      {loading === false ? (
+        <div className='flex flex-col justify-center items-center'>
+          <img
+            src={file.preview}
+            // Revoke data uri after image is loaded
+            onLoad={() => {
+              URL.revokeObjectURL(file.preview)
+            }}
+            alt={file.name}
+            className='rounded-md flex flex-col justify-center items-center w-full max-w-lg'
+          />
+          <span className='my-4'>
+            <strong>File</strong>: {files[0].path}
+          </span>
+        </div>
+      ) : null}
     </div>
   ))
   const upload = () => {
+    setLoading(true)
     const uploadUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`
     const uploadPreset = process.env.NEXT_PUBLIC_UPLOAD_PRESET
     const formData = new FormData()
@@ -73,7 +81,12 @@ export default function UploadFile() {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview))
   }, [files])
-  console.log(imgTransforms)
+  useEffect(() => {
+    if (imgTransforms) {
+      setLoading(false)
+    }
+  }, [imgTransforms])
+
   return (
     <div className='flex flex-col justify-center items-center m-8'>
       <section className='container flex flex-col justify-center items-center h-full w-full'>
@@ -112,11 +125,7 @@ export default function UploadFile() {
                 </span>
               </section>
             ) : null}
-            {!imgTransforms && files.length > 0 ? (
-              <span className='my-4'>
-                <strong>File</strong>: {files[0].path}
-              </span>
-            ) : null}
+            <PulseLoader color='#36d7b7' loading={loading} size={15} />
           </div>
         </div>
       </section>
@@ -125,7 +134,7 @@ export default function UploadFile() {
           onClick={upload}
           className='flex flex-row justify-center items-center gap-4 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'
         >
-          <UploadIcon /> Upload
+          <UploadIcon /> Convert
         </button>
         {imgTransforms ? (
           <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'>
@@ -148,7 +157,7 @@ export default function UploadFile() {
               Download
             </a>
           </button>
-        )}{' '}
+        )}
       </div>
     </div>
   )
