@@ -2,6 +2,7 @@
 import { useDropzone } from 'react-dropzone'
 import { useEffect, useState } from 'react'
 import UploadIcon from '../SVG/UploadIcon'
+import DropBoxIcon from '../SVG/DropBoxIcon'
 import DownloadIcon from '../SVG/DownloadIcon'
 
 export default function UploadFile() {
@@ -58,10 +59,10 @@ export default function UploadFile() {
       })
       .then((data) => {
         setImgTransforms(
-          `https://res.cloudinary.com/hugok2k/image/upload/c_crop,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
+          `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload/c_crop,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
         )
         setImgDownload(
-          `https://res.cloudinary.com/hugok2k/image/upload/fl_attachment:my_avatar/c_crop,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
+          `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload/fl_attachment:my_avatar/c_crop,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
         )
       })
       .catch((err) => {
@@ -72,56 +73,69 @@ export default function UploadFile() {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview))
   }, [files])
+  console.log(imgTransforms)
   return (
-    <div className='flex flex-col justify-center items-center'>
-      <section className='container flex flex-col justify-center items-center h-auto w-full'>
+    <div className='flex flex-col justify-center items-center m-8'>
+      <section className='container flex flex-col justify-center items-center h-full w-full'>
         <div {...getRootProps()} className='mx-4'>
           <input {...getInputProps()} />
           <div
-            className={`flex flex-col justify-center items-center w-full text-white border-4 rounded-md border-dashed p-8 ${
+            className={`flex flex-col justify-center items-center w-full border-4 rounded-md border-dashed p-8 ${
               isDragAccept || acceptedFiles.length > 0
                 ? 'border-green-600'
-                : 'border-red-50'
+                : 'border-red-200'
             }`}
           >
-            {thumbs}
+            {imgTransforms ? (
+              <section className='flex flex-col justify-center items-center h-full'>
+                <img src={imgTransforms} alt='Image transform' />
+              </section>
+            ) : (
+              thumbs
+            )}
             {files.length === 0 ? (
-              <>
+              <section className='flex flex-col justify-center items-center'>
+                <div
+                  className={`${
+                    isDragAccept
+                      ? 'mt-9 mb-7 stroke-green-600'
+                      : 'my-8 stroke-red-200'
+                  }`}
+                >
+                  <DropBoxIcon />
+                </div>
                 <span className='mb-4'>
                   Drag 'n' drop your file here, or click to select the file.
                 </span>
                 <span>
                   (Only *.jpeg, *.png and *.webp images will be accepted)
                 </span>
-              </>
-            ) : (
-              <span className='text-white'>{files[0].path}</span>
-            )}
+              </section>
+            ) : null}
+            {!imgTransforms && files.length > 0 ? (
+              <span className='my-4'>File: {files[0].path}</span>
+            ) : null}
           </div>
         </div>
-        {/* <aside>{thumbs}</aside> */}
       </section>
-      <button
-        onClick={upload}
-        className='flex flex-row justify-center items-center gap-4 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md text-white font-semibold hover:bg-pink-600'
-      >
-        <UploadIcon /> Upload
-      </button>
-      {imgTransforms ? (
-        <>
-          <img src={imgTransforms} alt='Image transform' />
-          <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md text-white font-semibold hover:bg-pink-600'>
-            <a
-              href={imgDownload}
-              download='image.png'
-              className='text-white flex flex-row justify-center items-center gap-4'
-            >
-              <DownloadIcon />
-              Download
-            </a>
-          </button>
-        </>
-      ) : null}
+      <div className='flex flex-row gap-4'>
+        <button
+          onClick={upload}
+          className='flex flex-row justify-center items-center gap-4 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'
+        >
+          <UploadIcon /> Upload
+        </button>
+        <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'>
+          <a
+            href={imgDownload}
+            download='image.png'
+            className='flex flex-row justify-center items-center gap-4'
+          >
+            <DownloadIcon />
+            Download
+          </a>
+        </button>
+      </div>
     </div>
   )
 }
