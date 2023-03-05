@@ -113,7 +113,9 @@ export default function UploadFile() {
               </section>
             ) : null}
             {!imgTransforms && files.length > 0 ? (
-              <span className='my-4'>File: {files[0].path}</span>
+              <span className='my-4'>
+                <strong>File</strong>: {files[0].path}
+              </span>
             ) : null}
           </div>
         </div>
@@ -125,16 +127,28 @@ export default function UploadFile() {
         >
           <UploadIcon /> Upload
         </button>
-        <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'>
-          <a
-            href={imgDownload}
-            download='image.png'
-            className='flex flex-row justify-center items-center gap-4'
+        {imgTransforms ? (
+          <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'>
+            <a
+              href={imgDownload}
+              download='image.png'
+              className='flex flex-row justify-center items-center gap-4'
+            >
+              <DownloadIcon />
+              Download
+            </a>
+          </button>
+        ) : (
+          <button
+            className='text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold '
+            disabled
           >
-            <DownloadIcon />
-            Download
-          </a>
-        </button>
+            <a className='flex flex-row justify-center items-center gap-4'>
+              <DownloadIcon />
+              Download
+            </a>
+          </button>
+        )}{' '}
       </div>
     </div>
   )
