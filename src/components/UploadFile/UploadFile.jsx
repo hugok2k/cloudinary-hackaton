@@ -11,24 +11,29 @@ export default function UploadFile() {
   const [files, setFiles] = useState([])
   const [imgTransforms, setImgTransforms] = useState('')
   const [imgDownload, setImgDownload] = useState('')
-  const { getRootProps, getInputProps, isDragAccept, acceptedFiles } =
-    useDropzone({
-      accept: {
-        'image/jpeg': [],
-        'image/png': [],
-        'image/webp': []
-      },
-      maxFiles: 1,
-      onDrop: (acceptedFiles) => {
-        setFiles(
-          acceptedFiles.map((file) =>
-            Object.assign(file, {
-              preview: URL.createObjectURL(file)
-            })
-          )
+  const {
+    getRootProps,
+    getInputProps,
+    isDragAccept,
+    isDragReject,
+    acceptedFiles
+  } = useDropzone({
+    accept: {
+      'image/jpeg': [],
+      'image/png': [],
+      'image/webp': []
+    },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
         )
-      }
-    })
+      )
+    }
+  })
   const thumbs = files.map((file) => (
     <div key={file.name}>
       {loading === false ? (
@@ -97,7 +102,7 @@ export default function UploadFile() {
               isDragAccept || acceptedFiles.length > 0
                 ? 'border-green-600'
                 : 'border-red-200'
-            }`}
+            } ${isDragReject ? 'border-red-600' : ''}`}
           >
             {imgTransforms ? (
               <section className='flex flex-col justify-center items-center h-full'>
@@ -125,7 +130,7 @@ export default function UploadFile() {
                 </span>
               </section>
             ) : null}
-            <PulseLoader color='#36d7b7' loading={loading} size={15} />
+            <PulseLoader color='#ff006a' loading={loading} size={15} />
           </div>
         </div>
       </section>
