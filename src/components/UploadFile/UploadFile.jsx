@@ -98,11 +98,13 @@ export default function UploadFile() {
         <div {...getRootProps()} className='mx-4'>
           <input {...getInputProps()} />
           <div
-            className={`flex flex-col justify-center items-center w-full border-4 rounded-md border-dashed p-8 ${
+            className={`flex flex-col justify-center items-center w-full min-h-[268px] border-4 rounded-md border-dashed p-8 ${
               isDragAccept || acceptedFiles.length > 0
                 ? 'border-green-600'
                 : 'border-red-200'
-            } ${isDragReject ? 'border-red-600' : ''}`}
+            } ${isDragReject && 'border-red-600'} ${
+              imgTransforms || loading ? 'border-0' : ''
+            }`}
           >
             {imgTransforms ? (
               <section className='flex flex-col justify-center items-center h-full'>
@@ -122,11 +124,11 @@ export default function UploadFile() {
                 >
                   <DropBoxIcon />
                 </div>
-                <span className='mb-4'>
-                  Drag 'n' drop your file here, or click to select the file.
+                <span className='mb-4 text-lg font-semibold'>
+                  Drag 'n' drop your file or click.
                 </span>
-                <span>
-                  (Only *.jpeg, *.png and *.webp images will be accepted)
+                <span className='font-semibold text-pink-300'>
+                  JPG, PNG or WEBP
                 </span>
               </section>
             ) : null}
@@ -134,14 +136,14 @@ export default function UploadFile() {
           </div>
         </div>
       </section>
-      <div className='flex flex-row gap-4'>
-        <button
-          onClick={upload}
-          className='flex flex-row justify-center items-center gap-4 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'
-        >
-          <UploadIcon /> Convert
-        </button>
-        {imgTransforms ? (
+      {imgTransforms ? (
+        <section className='flex flex-row gap-4'>
+          <button
+            disabled
+            className='flex flex-row justify-center items-center gap-4 text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold'
+          >
+            <UploadIcon /> Convert
+          </button>
           <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'>
             <a
               href={imgDownload}
@@ -152,7 +154,15 @@ export default function UploadFile() {
               Download
             </a>
           </button>
-        ) : (
+        </section>
+      ) : (
+        <section className='flex flex-row gap-4'>
+          <button
+            onClick={upload}
+            className='flex flex-row justify-center items-center gap-4 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'
+          >
+            <UploadIcon /> Convert
+          </button>
           <button
             className='text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold '
             disabled
@@ -162,8 +172,8 @@ export default function UploadFile() {
               Download
             </a>
           </button>
-        )}
-      </div>
+        </section>
+      )}
     </div>
   )
 }
