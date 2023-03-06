@@ -139,12 +139,21 @@ export default function UploadFile({
         </section>
       ) : (
         <section className='flex flex-row gap-3'>
-          <button
-            onClick={upload}
-            className='flex flex-row justify-center items-center gap-3 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95'
-          >
-            <UploadIcon /> Convert
-          </button>
+          {files.length > 0 ? (
+            <button
+              onClick={upload}
+              className='flex flex-row justify-center items-center gap-3 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95'
+            >
+              <UploadIcon /> Convert
+            </button>
+          ) : (
+            <button
+              disabled
+              className='flex flex-row justify-center items-center gap-3 text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold'
+            >
+              <UploadIcon /> Convert
+            </button>
+          )}
           <button
             className='text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold'
             disabled
