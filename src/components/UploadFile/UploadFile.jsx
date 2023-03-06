@@ -75,7 +75,7 @@ export default function UploadFile({
     }
   }, [imgTransforms])
   return (
-    <div className='flex flex-col justify-center items-center m-8'>
+    <main className='flex flex-col justify-center items-center m-8'>
       <section className='container flex flex-col justify-center items-center h-full w-full'>
         <div {...getRootProps()} className='mx-4'>
           <input {...getInputProps()} />
@@ -165,6 +165,6 @@ export default function UploadFile({
           </button>
         </section>
       )}
-    </div>
+    </main>
   )
 }

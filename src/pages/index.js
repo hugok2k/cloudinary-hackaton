@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer/Footer'
 import BackIcon from '@/components/SVG/BackIcon'
 import UploadFile from '@/components/UploadFile/UploadFile'
 import Head from 'next/head'
@@ -44,7 +45,7 @@ export default function Home() {
           type='image/svg+xml'
         />
       </Head>
-      <main className='flex flex-col justify-center items-center h-screen w-full bg-slate-900 text-white '>
+      <div className='flex flex-col justify-center items-center h-screen w-full bg-slate-900 text-white '>
         <h1 className='text-4xl font-bold my-8 h-auto'>
           ✨Custom<span className='text-[#ff006a]'>Avatar</span>
         </h1>
@@ -73,7 +74,8 @@ export default function Home() {
             <BackIcon />
           </button>
         </section>
-      </main>
+        <Footer />
+      </div>
     </>
   )
 }
