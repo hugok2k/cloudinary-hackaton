@@ -1,7 +1,37 @@
+import BackIcon from '@/components/SVG/BackIcon'
 import UploadFile from '@/components/UploadFile/UploadFile'
 import Head from 'next/head'
+import { useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 
 export default function Home() {
+  const [files, setFiles] = useState([])
+  const [imgTransforms, setImgTransforms] = useState('')
+  const [imgDownload, setImgDownload] = useState('')
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragAccept,
+    isDragReject,
+    acceptedFiles
+  } = useDropzone({
+    accept: {
+      'image/jpeg': [],
+      'image/png': [],
+      'image/webp': []
+    },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        )
+      )
+    }
+  })
   return (
     <>
       <Head>
@@ -18,7 +48,31 @@ export default function Home() {
         <h1 className='text-4xl font-bold my-8 h-auto'>
           ✨Custom<span className='text-[#ff006a]'>Avatar</span>
         </h1>
-        <UploadFile />
+        <section className='flex flex-row justify-center items-start w-full'>
+          <UploadFile
+            getRootProps={getRootProps}
+            getInputProps={getInputProps}
+            isDragAccept={isDragAccept}
+            isDragReject={isDragReject}
+            acceptedFiles={acceptedFiles}
+            files={files}
+            imgTransforms={imgTransforms}
+            imgDownload={imgDownload}
+            setImgTransforms={setImgTransforms}
+            setImgDownload={setImgDownload}
+          />
+          <button
+            className='bg-pink-700 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-md mt-8 active:scale-95'
+            onClick={() => {
+              setImgTransforms('')
+              setImgDownload('')
+              setFiles([])
+              acceptedFiles.length = 0
+            }}
+          >
+            <BackIcon />
+          </button>
+        </section>
       </main>
     </>
   )

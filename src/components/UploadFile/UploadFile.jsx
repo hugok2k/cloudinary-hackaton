@@ -1,39 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
-import { useDropzone } from 'react-dropzone'
 import { useEffect, useState } from 'react'
 import UploadIcon from '../SVG/UploadIcon'
 import DropBoxIcon from '../SVG/DropBoxIcon'
 import DownloadIcon from '../SVG/DownloadIcon'
 import { PulseLoader } from 'react-spinners'
 
-export default function UploadFile() {
+export default function UploadFile({
+  getRootProps,
+  getInputProps,
+  files,
+  isDragAccept,
+  isDragReject,
+  acceptedFiles,
+  imgTransforms,
+  imgDownload,
+  setImgTransforms,
+  setImgDownload
+}) {
   const [loading, setLoading] = useState(false)
-  const [files, setFiles] = useState([])
-  const [imgTransforms, setImgTransforms] = useState('')
-  const [imgDownload, setImgDownload] = useState('')
-  const {
-    getRootProps,
-    getInputProps,
-    isDragAccept,
-    isDragReject,
-    acceptedFiles
-  } = useDropzone({
-    accept: {
-      'image/jpeg': [],
-      'image/png': [],
-      'image/webp': []
-    },
-    maxFiles: 1,
-    onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-        )
-      )
-    }
-  })
   const thumbs = files.map((file) => (
     <div key={file.name}>
       {loading === false ? (
@@ -83,7 +67,6 @@ export default function UploadFile() {
       })
   }
   useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => files.forEach((file) => URL.revokeObjectURL(file.preview))
   }, [files])
   useEffect(() => {
@@ -91,7 +74,6 @@ export default function UploadFile() {
       setLoading(false)
     }
   }, [imgTransforms])
-
   return (
     <div className='flex flex-col justify-center items-center m-8'>
       <section className='container flex flex-col justify-center items-center h-full w-full'>
@@ -125,9 +107,9 @@ export default function UploadFile() {
                   <DropBoxIcon />
                 </div>
                 <span className='mb-4 text-lg font-semibold'>
-                  Drag 'n' drop your file or click.
+                  Drag 'n' drop one file or click.
                 </span>
-                <span className='font-semibold text-pink-300'>
+                <span className='font-semibold text-green-500'>
                   JPG, PNG or WEBP
                 </span>
               </section>
@@ -144,11 +126,11 @@ export default function UploadFile() {
           >
             <UploadIcon /> Convert
           </button>
-          <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'>
+          <button className='text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95'>
             <a
               href={imgDownload}
               download='image.png'
-              className='flex flex-row justify-center items-center gap-4'
+              className='flex flex-row justify-center items-center gap-3'
             >
               <DownloadIcon />
               Download
@@ -156,18 +138,18 @@ export default function UploadFile() {
           </button>
         </section>
       ) : (
-        <section className='flex flex-row gap-4'>
+        <section className='flex flex-row gap-3'>
           <button
             onClick={upload}
-            className='flex flex-row justify-center items-center gap-4 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600'
+            className='flex flex-row justify-center items-center gap-3 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95'
           >
             <UploadIcon /> Convert
           </button>
           <button
-            className='text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold '
+            className='text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold'
             disabled
           >
-            <a className='flex flex-row justify-center items-center gap-4'>
+            <a className='flex flex-row justify-center items-center gap-3'>
               <DownloadIcon />
               Download
             </a>
