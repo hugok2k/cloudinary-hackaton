@@ -1,5 +1,7 @@
 import Footer from '@/components/Footer/Footer'
 import BackIcon from '@/components/SVG/BackIcon'
+// import CatIcon from '@/components/SVG/CatIcon'
+// import DogIcon from '@/components/SVG/DogIcon'
 import UploadFile from '@/components/UploadFile/UploadFile'
 import Head from 'next/head'
 import { useState } from 'react'
@@ -62,17 +64,41 @@ export default function Home() {
             setImgTransforms={setImgTransforms}
             setImgDownload={setImgDownload}
           />
-          <button
-            className='bg-pink-700 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-md mt-8 active:scale-95'
-            onClick={() => {
-              setImgTransforms('')
-              setImgDownload('')
-              setFiles([])
-              acceptedFiles.length = 0
-            }}
-          >
-            <BackIcon />
-          </button>
+          <div className='flex flex-col gap-2'>
+            <button
+              className='bg-pink-700 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-md mt-8 active:scale-95'
+              onClick={() => {
+                setImgTransforms('')
+                setImgDownload('')
+                setFiles([])
+                acceptedFiles.length = 0
+              }}
+            >
+              <BackIcon />
+            </button>
+            {/* <button
+              className='bg-pink-700 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-md active:scale-95 stroke-white'
+              onClick={() => {
+                setImgTransforms('')
+                setImgDownload('')
+                setFiles([])
+                acceptedFiles.length = 0
+              }}
+            >
+              <DogIcon />
+            </button>
+            <button
+              className='bg-pink-700 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded-md active:scale-95 stroke-white'
+              onClick={() => {
+                setImgTransforms('')
+                setImgDownload('')
+                setFiles([])
+                acceptedFiles.length = 0
+              }}
+            >
+              <CatIcon />
+            </button> */}
+          </div>
         </section>
         <Footer />
       </div>

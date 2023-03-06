@@ -56,10 +56,10 @@ export default function UploadFile({
       })
       .then((data) => {
         setImgTransforms(
-          `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload/c_crop,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
+          `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload/c_thumb,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
         )
         setImgDownload(
-          `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload/fl_attachment:my_avatar/c_crop,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
+          `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload/fl_attachment:my_avatar/c_thumb,g_face,h_400,w_400/r_max/c_scale,w_200/${data.public_id}.png`
         )
       })
       .catch((err) => {
