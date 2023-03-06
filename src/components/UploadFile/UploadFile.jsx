@@ -80,12 +80,12 @@ export default function UploadFile({
         <div {...getRootProps()} className='mx-4'>
           <input {...getInputProps()} />
           <div
-            className={`flex flex-col justify-center items-center w-full min-h-[268px] border-4 rounded-md border-dashed p-8 ${
+            className={`flex flex-col justify-center items-center w-full min-h-[268px] rounded-md border-dashed p-8 ${
               isDragAccept || acceptedFiles.length > 0
                 ? 'border-green-600'
                 : 'border-red-200'
             } ${isDragReject && 'border-red-600'} ${
-              imgTransforms || loading ? 'border-0' : ''
+              imgTransforms || loading ? 'border-0' : 'border-4'
             }`}
           >
             {imgTransforms ? (
