@@ -1,0 +1,40 @@
+{
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "warn"
+      },
+      "style": {
+        "noNegationElse": "warn",
+        "useBlockStatements": {
+          "level": "warn",
+          "fix": "safe"
+        }
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded"
+    },
+    "globals": ["browser", "node"]
+  },
+  "files": {
+    "ignore": ["node_modules", ".next", "out", "coverage", ".idea"]
+  }
+}
