@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/noSvgWithoutTitle: A revisar */
 export function CloudinaryIcon() {
   return (
     <svg

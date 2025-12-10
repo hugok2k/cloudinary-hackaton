@@ -1,19 +1,22 @@
+"use client"
+
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import { PulseLoader } from "react-spinners"
 import { DownloadIcon, DropBoxIcon, UploadIcon } from "./SVG"
 
 type UploadFileProps = {
-  getRootProps: () => any;
-  getInputProps: () => any;
-  files: Array<any>;
-  isDragAccept: boolean;
-  isDragReject: boolean;
-  acceptedFiles: Array<any>;
-  imgTransforms: string;
-  imgDownload: string;
-  setImgTransforms: (url: string) => void;
-  setImgDownload: (url: string) => void;
-};
+  getRootProps: () => Record<string, unknown>
+  getInputProps: () => Record<string, unknown>
+  files: Array<File & { preview?: string }>
+  isDragAccept: boolean
+  isDragReject: boolean
+  acceptedFiles: Array<File>
+  imgTransforms: string
+  imgDownload: string
+  setImgTransforms: (url: string) => void
+  setImgDownload: (url: string) => void
+}
 
 export default function UploadFile({
   getRootProps,
@@ -30,19 +33,21 @@ export default function UploadFile({
   const [loading, setLoading] = useState(false)
   const thumbs = files.map((file) => {
     // Ensure preview URL exists
-    const preview = file.preview || URL.createObjectURL(file);
-    const name = file.name || "Unknown";
+    const preview = file.preview || URL.createObjectURL(file)
+    const name = file.name || "Unknown"
     return (
       <div key={name}>
         {loading === false ? (
           <div className="flex flex-col justify-center items-center">
-            <img
+            <Image
               src={preview}
               // Revoke data uri after image is loaded
-              onLoad={() => {
+              onLoadingComplete={() => {
                 URL.revokeObjectURL(preview)
               }}
               alt={name}
+              width={200}
+              height={200}
               className="rounded-md flex flex-col justify-center items-center w-full max-w-lg"
             />
             <span className="my-4">
@@ -85,11 +90,12 @@ export default function UploadFile({
       })
   }
   useEffect(() => {
-    return () => files.forEach((file) => {
-      if (file.preview) {
-        URL.revokeObjectURL(file.preview)
-      }
-    })
+    return () =>
+      files.forEach((file) => {
+        if (file.preview) {
+          URL.revokeObjectURL(file.preview)
+        }
+      })
   }, [files])
   useEffect(() => {
     if (imgTransforms) {
@@ -102,12 +108,13 @@ export default function UploadFile({
         <div {...getRootProps()} className="mx-4">
           <input {...getInputProps()} />
           <div
-            className={`flex flex-col justify-center items-center w-full min-h-[268px] rounded-md border-dashed p-8 ${isDragAccept || acceptedFiles.length > 0 ? "border-green-600" : "border-red-200"
-              } ${isDragReject && "border-red-600"} ${imgTransforms || loading ? "border-0" : "border-4"}`}
+            className={`flex flex-col justify-center items-center w-full min-h-[268px] rounded-md border-dashed p-8 ${
+              isDragAccept || acceptedFiles.length > 0 ? "border-green-600" : "border-red-200"
+            } ${isDragReject && "border-red-600"} ${imgTransforms || loading ? "border-0" : "border-4"}`}
           >
             {imgTransforms ? (
               <section className="flex flex-col justify-center items-center h-full">
-                <img src={imgTransforms} alt="Image transform" />
+                <Image src={imgTransforms} alt="Transformed avatar" width={200} height={200} />
               </section>
             ) : (
               thumbs
@@ -128,40 +135,45 @@ export default function UploadFile({
       {imgTransforms ? (
         <section className="flex flex-row gap-4">
           <button
+            type="button"
             disabled
-            className="flex flex-row justify-center items-center gap-4 text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold"
+            className="flex flex-row justify-center items-center gap-4 text-white my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold"
           >
             <UploadIcon /> Convert
           </button>
-          <button className="text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95">
-            <a href={imgDownload} download="image.png" className="flex flex-row justify-center items-center gap-3">
-              <DownloadIcon />
-              Download
-            </a>
-          </button>
+          <a
+            href={imgDownload}
+            download="image.png"
+            className="text-white my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95 flex flex-row justify-center items-center gap-3"
+          >
+            <DownloadIcon />
+            Download
+          </a>
         </section>
       ) : (
         <section className="flex flex-row gap-3">
           {files.length > 0 ? (
             <button
+              type="button"
               onClick={upload}
-              className="flex flex-row justify-center items-center gap-3 text-whit my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95"
+              className="flex flex-row justify-center items-center gap-3 text-white my-8 bg-pink-700 py-3 px-5 rounded-md  font-semibold hover:bg-pink-600 active:scale-95"
             >
               <UploadIcon /> Convert
             </button>
           ) : (
             <button
+              type="button"
               disabled
-              className="flex flex-row justify-center items-center gap-3 text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold"
+              className="flex flex-row justify-center items-center gap-3 text-white my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold"
             >
               <UploadIcon /> Convert
             </button>
           )}
-          <button className="text-whit my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold" disabled>
-            <a className="flex flex-row justify-center items-center gap-3">
+          <button type="button" className="text-white my-8 bg-gray-600 py-3 px-5 rounded-md  font-semibold" disabled>
+            <div className="flex flex-row justify-center items-center gap-3">
               <DownloadIcon />
               Download
-            </a>
+            </div>
           </button>
         </section>
       )}

@@ -1,4 +1,4 @@
-import { CloudinaryIcon } from "./SVG";
+import { CloudinaryIcon } from "./SVG"
 
 export default function Footer() {
   return (

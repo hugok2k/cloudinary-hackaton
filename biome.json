@@ -1,25 +1,13 @@
 {
-  "linter": {
+  "$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
+  "vcs": {
     "enabled": true,
-    "rules": {
-      "recommended": true,
-      "complexity": {
-        "noExcessiveCognitiveComplexity": "warn"
-      },
-      "style": {
-        "noNegationElse": "warn",
-        "useBlockStatements": {
-          "level": "warn",
-          "fix": "safe"
-        }
-      },
-      "correctness": {
-        "useExhaustiveDependencies": "off"
-      },
-      "a11y": {
-        "noSvgWithoutTitle": "off"
-      }
-    }
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
   },
   "formatter": {
     "enabled": true,
@@ -28,13 +16,35 @@
     "lineWidth": 120,
     "lineEnding": "lf"
   },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noUnknownAtRules": "off"
+      }
+    },
+    "domains": {
+      "next": "recommended",
+      "react": "recommended"
+    }
+  },
   "javascript": {
     "formatter": {
       "semicolons": "asNeeded"
     },
     "globals": ["browser", "node"]
   },
-  "files": {
-    "ignore": ["node_modules", ".next", "out", "coverage", ".idea"]
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   }
 }

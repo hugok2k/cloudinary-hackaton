@@ -1,9 +1,9 @@
-'use client'
+"use client"
+import { useState } from "react"
+import { useDropzone } from "react-dropzone"
 import Footer from "@/components/Footer"
 import { BackIcon } from "@/components/SVG"
 import UploadFile from "@/components/UploadFile"
-import { useState } from "react"
-import { useDropzone } from "react-dropzone"
 
 type PreviewFile = File & { preview: string }
 
