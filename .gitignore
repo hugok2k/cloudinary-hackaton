@@ -39,6 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Evitar errores en Vercel por archivos de configuración de pnpm
-pnpm-workspace.yaml
